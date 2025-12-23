@@ -95,14 +95,14 @@ public class BorrowRecord {
 
     @Override
     public String toString() {
-        return "BorrowRecord{" +
-                "id=" + id +
-                ", reader=" + reader.getName() +
-                ", book=" + book.getTitle() +
-                ", borrowDate=" + borrowDate +
-                ", dueDate=" + dueDate +
-                ", returnDate=" + returnDate +
-                ", status='" + status + '\'' +
-                '}';
+        return "借阅记录信息：" +
+                "\n  记录ID：" + id +
+                "\n  读者：" + reader.getName() + " (ID: " + reader.getId() + ")" +
+                "\n  图书：" + book.getTitle() + " (ISBN: " + book.getIsbn() + ")" +
+                "\n  借阅日期：" + borrowDate +
+                "\n  应还日期：" + dueDate +
+                "\n  归还日期：" + (returnDate != null ? returnDate : "未归还") +
+                "\n  状态：" + status +
+                "\n";
     }
 }

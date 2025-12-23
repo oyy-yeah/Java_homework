@@ -94,15 +94,15 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" +
-                "isbn='" + isbn + '\'' +
-                ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", publisher='" + publisher + '\'' +
-                ", price=" + price +
-                ", totalQuantity=" + totalQuantity +
-                ", availableQuantity=" + availableQuantity +
-                ", borrowable=" + borrowable +
-                '}';
+        return "图书信息：" +
+                "\n  ISBN：" + isbn +
+                "\n  书名：" + title +
+                "\n  作者：" + author +
+                "\n  出版社：" + publisher +
+                "\n  价格：" + price + "元" +
+                "\n  总数量：" + totalQuantity +
+                "\n  可借数量：" + availableQuantity +
+                "\n  可借状态：" + (borrowable ? "可借" : "不可借") +
+                "\n";
     }
 }

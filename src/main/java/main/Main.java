@@ -6,6 +6,7 @@ import entity.Reader;
 import service.BookService;
 import service.ReaderService;
 import service.BorrowService;
+import util.DataInitializer;
 
 import java.util.List;
 import java.util.Scanner;
@@ -18,6 +19,15 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("欢迎使用小型图书借阅管理系统");
+        
+        // 检查是否需要初始化图书数据
+        if (bookService.getAllBooks().isEmpty()) {
+            System.out.println("检测到数据库为空，正在初始化图书数据...");
+            DataInitializer.initializeBooks();
+            System.out.println("图书数据初始化完成！\n");
+        } else {
+            System.out.println("检测到数据库中已有图书数据，跳过初始化。\n");
+        }
         while (true) {
             showMainMenu();
             int choice = getChoice();
@@ -55,8 +65,10 @@ public class Main {
 
     private static int getChoice() {
         try {
-            return Integer.parseInt(scanner.nextLine());
+            String input = scanner.nextLine();
+            return Integer.parseInt(input);
         } catch (NumberFormatException e) {
+            System.out.println("输入错误！请输入正确的数字。");
             return -1;
         }
     }
@@ -106,12 +118,39 @@ public class Main {
         String author = scanner.nextLine();
         System.out.print("出版社: ");
         String publisher = scanner.nextLine();
-        System.out.print("价格: ");
-        double price = Double.parseDouble(scanner.nextLine());
-        System.out.print("总数量: ");
-        int totalQuantity = Integer.parseInt(scanner.nextLine());
-        System.out.print("可借数量: ");
-        int availableQuantity = Integer.parseInt(scanner.nextLine());
+        
+        double price = 0;
+        while (true) {
+            System.out.print("价格: ");
+            try {
+                price = Double.parseDouble(scanner.nextLine());
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("输入错误！请输入正确的价格（数字）。");
+            }
+        }
+        
+        int totalQuantity = 0;
+        while (true) {
+            System.out.print("总数量: ");
+            try {
+                totalQuantity = Integer.parseInt(scanner.nextLine());
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("输入错误！请输入正确的总数量（整数）。");
+            }
+        }
+        
+        int availableQuantity = 0;
+        while (true) {
+            System.out.print("可借数量: ");
+            try {
+                availableQuantity = Integer.parseInt(scanner.nextLine());
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("输入错误！请输入正确的可借数量（整数）。");
+            }
+        }
 
         Book book = new Book(isbn, title, author, publisher, price, totalQuantity, availableQuantity, availableQuantity > 0);
         if (bookService.addBook(book)) {
@@ -152,19 +191,31 @@ public class Main {
         System.out.print("价格 (" + book.getPrice() + "): ");
         String priceStr = scanner.nextLine();
         if (!priceStr.isEmpty()) {
-            book.setPrice(Double.parseDouble(priceStr));
+            try {
+                book.setPrice(Double.parseDouble(priceStr));
+            } catch (NumberFormatException e) {
+                System.out.println("输入错误！价格必须是数字，保持原值：" + book.getPrice());
+            }
         }
 
         System.out.print("总数量 (" + book.getTotalQuantity() + "): ");
         String totalQuantityStr = scanner.nextLine();
         if (!totalQuantityStr.isEmpty()) {
-            book.setTotalQuantity(Integer.parseInt(totalQuantityStr));
+            try {
+                book.setTotalQuantity(Integer.parseInt(totalQuantityStr));
+            } catch (NumberFormatException e) {
+                System.out.println("输入错误！总数量必须是整数，保持原值：" + book.getTotalQuantity());
+            }
         }
 
         System.out.print("可借数量 (" + book.getAvailableQuantity() + "): ");
         String availableQuantityStr = scanner.nextLine();
         if (!availableQuantityStr.isEmpty()) {
-            book.setAvailableQuantity(Integer.parseInt(availableQuantityStr));
+            try {
+                book.setAvailableQuantity(Integer.parseInt(availableQuantityStr));
+            } catch (NumberFormatException e) {
+                System.out.println("输入错误！可借数量必须是整数，保持原值：" + book.getAvailableQuantity());
+            }
         }
 
         if (bookService.updateBook(book)) {
@@ -432,12 +483,17 @@ public class Main {
     private static void returnBook() {
         System.out.println("\n图书归还");
         System.out.print("借阅记录ID: ");
-        int recordId = getChoice();
-
-        if (borrowService.returnBook(recordId)) {
-            System.out.println("图书归还成功！");
-        } else {
-            System.out.println("图书归还失败！可能记录不存在或已归还。");
+        String recordIdStr = scanner.nextLine();
+        
+        try {
+            int recordId = Integer.parseInt(recordIdStr);
+            if (borrowService.returnBook(recordId)) {
+                System.out.println("图书归还成功！");
+            } else {
+                System.out.println("图书归还失败！可能记录不存在或已归还。");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("输入错误！请输入正确的借阅记录ID（数字）。");
         }
     }
 

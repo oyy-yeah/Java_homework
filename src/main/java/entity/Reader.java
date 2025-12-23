@@ -45,12 +45,12 @@ public abstract class Reader extends Person {
 
     @Override
     public String toString() {
-        return "Reader{" +
-                "id='" + getId() + '\'' +
-                ", name='" + getName() + '\'' +
-                ", type='" + type + '\'' +
-                ", currentBorrowedCount=" + currentBorrowedCount +
-                ", maxBorrowCount=" + maxBorrowCount +
-                '}';
+        return "读者信息：" +
+                "\n  读者ID：" + getId() +
+                "\n  姓名：" + getName() +
+                "\n  类型：" + type +
+                "\n  当前借阅数量：" + currentBorrowedCount +
+                "\n  最大借阅数量：" + maxBorrowCount +
+                "\n";
     }
 }
