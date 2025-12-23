@@ -3,6 +3,7 @@ package service;
 import dao.BookDAO;
 import dao.impl.BookDAOImpl;
 import entity.Book;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookService {
@@ -58,14 +59,14 @@ public class BookService {
 
     public List<Book> searchBooksByTitle(String title) {
         if (title == null || title.isEmpty()) {
-            return getAllBooks();
+            return new ArrayList<>();
         }
         return bookDAO.searchBooksByTitle(title);
     }
 
     public List<Book> searchBooksByAuthor(String author) {
         if (author == null || author.isEmpty()) {
-            return getAllBooks();
+            return new ArrayList<>();
         }
         return bookDAO.searchBooksByAuthor(author);
     }
